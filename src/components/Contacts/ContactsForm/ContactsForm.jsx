@@ -26,7 +26,8 @@ export default function ContactsForm() {
     <div>
       <Formik initialValues={initialValues} validationSchema={validationSchema}>
         {({ values, handleChange }) => {
-          <Form>
+          return (
+            <Form>
             <div>
               <Field
                 placeholder="name"
@@ -34,7 +35,7 @@ export default function ContactsForm() {
                 onChange={handleChange}
                 name="name"
               />
-              <ErrorMessage />
+               <ErrorMessage name="name" component="div" />
             </div>
             <div>
               <Field
@@ -43,10 +44,11 @@ export default function ContactsForm() {
                 onChange={handleChange}
                 name="number"
               />
-              <ErrorMessage />
+               <ErrorMessage name="number" component="div" />
             </div>
             <button type="submit">Submit</button>
-          </Form>;
+          </Form>
+          );
         }}
       </Formik>
     </div>

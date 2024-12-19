@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register, login, logout } from "./operations";
+import { register, login, logout, refreshUser } from "./operations";
 
 const authSlice = createSlice({
   name: "auth",
@@ -13,19 +13,26 @@ const authSlice = createSlice({
     isRefreshing: false,
   },
   extraReducers: (builder) => {
-    builder.addCase(register.fulfilled, (state, action) => {
+    builder
+      .addCase(register.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
-    }).addCase(login.fulfilled, (state, action) => {
+      })
+      .addCase(login.fulfilled, (state, action) => {
         state.user = action.payload.user;
-        state.token= action.payload.token;
+        state.token = action.payload.token;
         state.isLoggedIn = true;
-    }).addCase(logout.fulfilled, (state, action) => {
-        state.user = null,
-        state.token = null,
-        state.isLoggedIn = false;
-    }).addMatcher(
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        (state.user = null), (state.token = null), (state.isLoggedIn = false);
+      })
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        state.isRefreshing = false;
+        state.isLoggedIn = true;
+        state.user = action.payload;
+      })
+      .addMatcher(
         (action) => action.type.endsWith("/pending"),
         (state) => {
           state.isLoading = true;

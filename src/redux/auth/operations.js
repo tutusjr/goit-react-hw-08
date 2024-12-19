@@ -27,14 +27,40 @@ export const login = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
+export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
+  const state = thunkAPI.getState();
+  const token = state.auth.token;
+
+  if (!token) {
+    return thunkAPI.rejectWithValue("No token found");
+  }
+
+  try {
+    const response = await axios.post(`${url}users/logout`, null, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (e) {
+    return thunkAPI.rejectWithValue(e.message);
+  }
+});
+
+export const refreshUser = createAsyncThunk(
+  "auth/refresh",
   async (_, thunkAPI) => {
-    try{
-        const response = await axios.post(`${url}users/logout`);
-        return response.data;
-    }catch(e){
-        return thunkAPI.rejectWithValue(e.message)
+    const state = thunkAPI.getState();
+    const persistedToken = state.auth.token;
+
+    if (!persistedToken) {
+      return thunkAPI.rejectWithValue("No Token found");
+    }
+    try {
+      const response = await axios.get(`${url}users/current`);
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(e.message);
     }
   }
 );

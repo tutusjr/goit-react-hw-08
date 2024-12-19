@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function ContactList() {
-  return (
-    <div>ContactList</div>
-  )
+  return <div>ContactList</div>;
 }

@@ -1,7 +1,29 @@
-import React from 'react'
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../redux/auth/operations";
+import { useNavigate } from "react-router";
+import { persistor } from "../../redux/store";
 
 export default function UserMenu() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {user, token} = useSelector((state) => state.auth);
+  console.log(token)
+
+  const handleLogout = async () => {
+    try {
+      await dispatch(logout(token)).unwrap();
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
   return (
-    <div>UserMenu</div>
-  )
+    <div>
+      <p>Welcome {user.name}!</p>
+      <button onClick={handleLogout}>Logout</button>
+    </div>
+  );
 }
