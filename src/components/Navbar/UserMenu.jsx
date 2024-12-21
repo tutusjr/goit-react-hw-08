@@ -7,7 +7,6 @@ export default function UserMenu() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {user, token} = useSelector((state) => state.auth);
-  console.log(token)
 
   const handleLogout = async () => {
     try {
