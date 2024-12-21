@@ -2,7 +2,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../redux/auth/operations";
 import { useNavigate } from "react-router";
-import { persistor } from "../../redux/store";
 
 export default function UserMenu() {
   const dispatch = useDispatch();
